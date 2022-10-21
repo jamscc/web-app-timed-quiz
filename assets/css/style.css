@@ -1,0 +1,131 @@
+/* CSS variables */
+:root {
+    --color-BL: #2e4a62;
+    --color-PH: #e0d1cb;
+    --color-GY: #b6c3cf;
+    --color-TGN: #7FB1A4;
+    --color-GN: #b6d9b6;
+    --text-color-W: #ffffff;
+    --text-color-B: #000000;
+    --fontfamily-H: Helvetica, Arial, sans-serif;
+    --fontfamily-C: 'Courier New', Courier, monospace;
+}
+
+* {
+    font-family: var(--fontfamily-H);
+    color: var(--text-color-B);
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* used flex for header nav, which includes the 'view high scores' button and the timer */
+header nav {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-TGN);
+}
+
+#view-high-scores {
+    font-family: var(--fontfamily-C);
+    font-size: 1em;
+    font-weight: bolder;
+    width: 250px;
+    height: 75px;
+    margin: 16px;
+    background-color: var(--color-GY);
+}
+
+/* applies to the timer */
+#timer {
+    font-family: var(--fontfamily-C);
+    font-size: 1em;
+    font-weight: bolder;
+    width: 250px;
+    height: 75px;
+    margin: 16px;
+    padding-top: 1.75em;
+    text-align: center;
+    background-color: var(--color-GY);
+}
+
+/* used grid for main */
+#main-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    margin-top: 32px;
+}
+
+/* used flex for the intro, which includes the heading, the instructions, and a 'Start Quiz' button */
+#intro-sec {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 75%;
+}
+
+.intro {
+    margin: 12px;
+    width: 100%;
+}
+
+#instructions {
+    line-height: 1.5em;
+}
+
+#start-button {
+    height: 50px;
+    width: 30%;
+    font-family: var(--fontfamily-C);
+    font-weight: bolder;
+    color: var(--text-color-W);
+    background-color: var(--color-BL);
+    font-size: 1em;
+}
+
+/* used flex; where the questions along with the answer choices are displayed */
+#add-questions-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.questions {
+    margin: 12px;
+}
+
+#ask-question {
+    width: 75%;
+}
+
+#answer-choices {
+    cursor: pointer;
+    width: 75%;
+}
+
+/* applies to the list of the answer choices */
+.list-item {
+    width: 100%;
+    padding: 16px;
+    border: 1em 0;
+    margin: .30em 0;
+    font-size: 1.25em;
+    background-color: var(--color-GN);
+}
+
+.list-item:active {
+    background-color: var(--color-PH);
+    font-weight: bolder;
+}
+
+/* applies to the element that contains the message about whether the answer chosen is correct or incorrect */
+#check-answer {
+    width: 100%;
+    margin-top: 16px;
+    text-align: center;
+    font-size: 2em;
+    font-style: oblique;
+}
