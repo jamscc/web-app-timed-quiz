@@ -129,3 +129,104 @@ header nav {
     font-size: 2em;
     font-style: oblique;
 }
+
+#end-quiz-form {
+    width: 100%;
+    text-align: center;
+}
+
+#msg-done {
+    width: 100%;
+    font-size: 2.5em;
+    color: var(--color-BL);
+    text-align: center;
+}
+
+.final-score {
+    margin: 32px 0;
+}
+
+/* applies to where the total score will be displayed */
+#final-quiz-score {
+    width: 100%;
+    font-size: 1.75em;
+    font-style: oblique;
+    text-align: center;
+}
+
+#initials-label {
+    display: block;
+    width: 35%;
+    padding: 2.5%;
+    margin: 0 auto;
+    font-family: var(--fontfamily-C);
+    font-size: 1.25em;
+    background-color: var(--color-BL);
+    color: var(--text-color-W);
+    text-align: center;
+}
+
+/* applies to the input */
+#initials {
+    display: block;
+    width: 35%;
+    height: 85px;
+    margin: 16px auto;
+    font-family: var(--fontfamily-C);
+    font-size: 1.5em;
+    text-align: center;
+    border: 8px dashed var(--color-BL);
+}
+
+/* applies to the button for saving initials/scores */
+#score-button {
+    width: 35%;
+    height: 85px;
+    font-family: var(--fontfamily-C);
+    font-size: 1.5em;
+    border-radius: 32px;
+}
+
+#score-button:hover {
+    background-color: var(--color-PH);
+}
+
+/* used flex for the high scores summary */
+#high-score-form {
+    display: flex;
+    flex-direction: column;
+    margin: 32px;
+    height: 100%;
+}
+
+#heading-high-score {
+    width: 90%; 
+    height: 85px; 
+    margin: 0 auto 25px auto; 
+    padding-top: 15px;
+    font-size: 2.75em;
+    font-family: var(--fontfamily-C);
+    text-align: center;
+}
+
+/* applies to where the list of the high scores is displayed */
+#high-scores {
+    margin-left: 20%;
+    font-size: 2em;
+}
+
+#button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 10%;
+}
+
+/* applies to the 'go back' and clear buttons */
+#go-back-button,
+#clear-score {
+    width: 35%;
+    height: 100px;
+    font-family: var(--fontfamily-C);
+    font-size: 1.5em;
+}

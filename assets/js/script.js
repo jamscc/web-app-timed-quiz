@@ -25,7 +25,7 @@ var answerChoicesArray = [
     ["if", "switch", "div", "else if"],
     ["a commit message", "a pseudo-class", "the <br> tag", "an array"],
     ["check read statement", "for statement", "for in statement", "do while statement"],
-    ["by the use of a pseudo-class", "by the use of a form", "by the use of div", "by the use of the var keyword"]
+    ["by the use of a pseudo-class", "by the use of a form", "by the use of a div", "by the use of the var keyword"]
 ];
 
 var correctAnswer = [2, 3, 4, 1, 4];
@@ -44,6 +44,38 @@ var keepTrackResponses = [];
 
 var onlyOneAnswer = true;
 var answerChosen;
+
+// where the quiz results will be displayed
+var endForm = document.createElement("form");
+var msgEndQuiz = document.createElement("h2");
+var finalQuizScore = document.createElement("p");
+
+// input and the button to save the initials and score
+var labelInputBox = document.createElement("label");
+var initialsInputBox = document.createElement("input");
+var scoreSubmitBtn = document.createElement("button");
+
+// for the calculation of the total score
+var incorrectResponses;
+var correctResponses;
+var totalScore;
+
+// array for the initials and scores
+var initialsScore = [];
+var initialsScoreSorted;
+
+// where the high scores will be displayed
+var highScoreForm = document.createElement("form");
+var highScoresHeading = document.createElement("h2");
+var highScoresList = document.createElement("ul");
+
+// the 'go back' and clear buttons for the high scores summary
+var buttonContainer = document.createElement("div");
+var goBackBtn = document.createElement("button");
+var clearHighScores = document.createElement("button");
+
+// stored initials/scores
+var storedScore;
 
 // 'view high scores' button
 var viewHighScoresBtn = document.getElementById("view-high-scores");
@@ -72,6 +104,7 @@ function introPageShow() {
     startBtn.setAttribute("id", "start-button");
 
     clearInterval(timer);
+    visibleHighScores = true;
 }
 
 // calls introPageShow
@@ -89,6 +122,7 @@ function timerCountDown() {
         if ((timeRemaining <= 0)) {
             clearInterval(timer);
             timerTracking.innerHTML = "Quiz timer has run out";
+            visibleHighScores = false;
             setTimeout(() => {
                 timerTracking.innerHTML = "Timer";
                 askQuizQuestion.innerHTML = "";
@@ -104,6 +138,10 @@ function timerCountDown() {
 
 // to display the questions and answer choices
 function addQuestions() {
+
+    if (!visibleHighScores) {
+        return;
+    }
 
     mainPage.appendChild(addQuestionsForm);
     addQuestionsForm.appendChild(askQuizQuestion);
@@ -165,6 +203,10 @@ possibleAnswersList.addEventListener("click", (event) => {
         return;
     }
 
+    if ((keepTrackResponses.length == correctAnswer.length)) {
+        visibleHighScores = false;
+    }
+
     setTimeout(() => {
         askQuizQuestion.innerHTML = "";
         possibleAnswersList.innerHTML = "";
@@ -181,7 +223,143 @@ possibleAnswersList.addEventListener("click", (event) => {
     }, 1250)
 })
 
-function endQuiz() {}
+// to display the results of the quiz
+// button to save initials and score
+function endQuiz() {
+    addQuestionsForm.remove();
+
+    mainPage.appendChild(endForm);
+    endForm.appendChild(msgEndQuiz);
+    endForm.appendChild(finalQuizScore);
+
+    endForm.setAttribute("id", "end-quiz-form");
+    msgEndQuiz.setAttribute("id", "msg-done");
+    finalQuizScore.setAttribute("id", "final-quiz-score");
+
+    msgEndQuiz.textContent = "The Quiz Session has ended!";
+
+    // calculation of the total score
+    correctResponses = Array.from(keepTrackResponses).filter(element => element == "Correct");
+    totalScore = Math.round(Number(correctResponses.length / (questionsQuiz.length)) * 100);
+
+    // where the score is displayed
+    finalQuizScore.textContent = ("Your total score on this quiz: " + totalScore + "%");
+
+    endForm.appendChild(labelInputBox);
+    labelInputBox.setAttribute("id", "initials-label");
+    labelInputBox.setAttribute("for", "initials");
+    labelInputBox.textContent = "Enter your initials";
+    
+    // where to input initials
+    endForm.appendChild(initialsInputBox);
+    initialsInputBox.setAttribute("id", "initials");
+    initialsInputBox.setAttribute("type", "text");
+    initialsInputBox.setAttribute("placeholder", "type here");
+    initialsInputBox.value = "";
+
+    // button to save initials and score
+    endForm.appendChild(scoreSubmitBtn);
+    scoreSubmitBtn.setAttribute("id", "score-button");
+    scoreSubmitBtn.setAttribute("type", "submit");
+    scoreSubmitBtn.textContent = "Submit Score";
+
+    for (i = 0; i < endForm.childElementCount; i++) {
+        endForm.children[i].setAttribute("class", "final-score")
+    }
+    visibleHighScores = false;
+}
+
+// to save initials and scores
+// local storage is used
+scoreSubmitBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    // saved initials and score 
+    var eachInitialsScore = {
+        "initials": initialsInputBox.value,
+        "score": totalScore
+    };
+
+    initialsScore.push(eachInitialsScore);
+    // to sort highest to lowest
+    initialsScoreSorted = initialsScore.sort(function (low, high) { return high.score - low.score });
+
+    // local storage
+    localStorage.setItem("initialsScore", JSON.stringify(initialsScoreSorted));
+
+    endForm.remove();
+    
+    // to display the high scores summary
+    highScoresSummary();
+})
+
+// to display the initials and scores from local storage
+function highScoresSummary() {
+    
+    // a heading, a sorted list of scores, a 'Go Back' button, and a 'Clear High Scores' button 
+    mainPage.appendChild(highScoreForm);
+    highScoreForm.appendChild(highScoresHeading);
+    highScoreForm.appendChild(highScoresList);
+    highScoreForm.appendChild(buttonContainer);
+    buttonContainer.appendChild(goBackBtn);
+    buttonContainer.appendChild(clearHighScores);
+
+    // id attributes
+    highScoreForm.setAttribute("id", "high-score-form");
+    highScoresHeading.setAttribute("id", "heading-high-score");
+    highScoresList.setAttribute("id", "high-scores");
+    buttonContainer.setAttribute("id", "button-container");
+    goBackBtn.setAttribute("id", "go-back-button");
+    clearHighScores.setAttribute("id", "clear-score");
+
+    highScoresHeading.setAttribute("style", "background-color: var(--color-BL); color: var(--text-color-W)");
+
+    // two buttons: go back and clear
+    goBackBtn.setAttribute("type", "submit");
+    goBackBtn.textContent = "Go Back";
+    clearHighScores.setAttribute("type", "submit");
+    clearHighScores.textContent = "Clear High Scores";
+    
+    // heading for the summary
+    highScoresHeading.innerHTML = "High Scores";
+    
+    // get from local storage
+    storedScore = JSON.parse(localStorage.getItem("initialsScore"));
+
+    // to display initials/scores from local storage
+    if (storedScore != null) {
+        for (var i = 0; i < storedScore.length; i++) {
+            var scoresListItem = document.createElement("li");
+            scoresListItem.innerHTML = (storedScore[i].initials + " " + storedScore[i].score + "%");
+            highScoresList.appendChild(scoresListItem);
+            scoresListItem.setAttribute("style", "color: var(--color-BL); font-family: var(--fontfamily-C)");
+        }
+        initialsScore = storedScore;
+    }
+    return initialsScore;
+}
+
+// to go back to the intro
+goBackBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    // clear and remove
+    highScoresList.innerHTML = "";
+    highScoreForm.remove();
+    timerTracking.innerHTML = "";
+    timeRemaining = 50;
+    timerTracking.setAttribute("style", "background-color: var(--color-GY)"); 
+    // call introPageShow
+    introPageShow();
+})
+
+// to clear the high scores summary and local storage
+clearHighScores.addEventListener("click", (event) => {
+    event.preventDefault();
+    highScoresList.innerHTML = "";
+    initialsScore = [];
+    localStorage.clear();
+})
+
 
 // to start the quiz; calls timerCountDown and addQuestions
 startBtn.addEventListener("click", () => {
@@ -200,4 +378,19 @@ startBtn.addEventListener("click", () => {
 
 // to display the high scores summary
 viewHighScoresBtn.addEventListener("click", () => {
+    if (!visibleHighScores) {
+        return;
+    }
+    // to clear / remove
+    clearInterval(timer);
+    timerTracking.innerHTML = "";
+    timerTracking.setAttribute("style", "background-color: var(--color-TGN)");
+    sectionIntro.remove();
+    addQuestionsForm.remove();
+    possibleAnswersList.innerHTML = "";
+    endForm.remove(); 
+
+    // calls highScoresSummary
+    highScoresSummary();
+    visibleHighScores = false;
 })
