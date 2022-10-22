@@ -116,9 +116,13 @@ header nav {
     background-color: var(--color-GN);
 }
 
-.list-item:active {
+.list-item:hover {
     background-color: var(--color-PH);
     font-weight: bolder;
+}
+
+.list-item:active {
+    border: 2px dashed var(--color-BL);
 }
 
 /* applies to the element that contains the message about whether the answer chosen is correct or incorrect */
@@ -229,4 +233,75 @@ header nav {
     height: 100px;
     font-family: var(--fontfamily-C);
     font-size: 1.5em;
+}
+
+/* various media queries */
+@media screen and (max-width: 768px) {
+
+    header nav {
+        justify-content: center;
+        text-align: center;
+    }
+
+    #heading-high-score {
+        padding-top: 25px;
+        font-size: 2.25em;
+    }
+}
+
+@media screen and (max-width: 500px) {
+
+    #start-button {
+        width: 75px;
+    }
+
+    #initials-label, #initials, #score-button {
+        width: 160px;
+    }
+
+    #high-scores {
+        font-size: 1.25em;
+    }
+
+    #heading-high-score {
+        padding-top: 25px;
+        font-size: 1.5em;
+    }
+
+    #go-back-button, #clear-score {
+        height: 75px;
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 250px) { 
+    
+    #msg-done {
+        font-size: 1.5em;
+    }
+    
+    #final-quiz-score, #initials-label, #initials, #score-button {
+        font-size: 1em;
+    }
+
+    #score-button {
+        width: 75px;
+        margin: 0;
+    }
+
+    #high-score-form {
+        margin: 32px;
+    }
+
+    #heading-high-score {
+        width: 100%;
+        padding-top: 25px;
+        font-size: 1.25em;
+    }
+
+    #go-back-button, #clear-score {
+        width: 50px;
+        height: 50px;
+        font-size: .75em;
+    }
 }
